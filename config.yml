@@ -1,0 +1,21 @@
+default:
+  port: 9090                                         # port http server listens on
+  url: "http://192.168.1.8:9090"                     # URL to recieve events on
+  orchestra:
+    host: localhost                                  # Hostname / IP of orchestra host
+    port: 8080                                       # HTTP port orchestra is running on
+    user: myuser                                     # Username used when calling Orchestra entrypoint REST interface
+    password: mypassword                             # Password used when calling Orchestra entrypoint REST interface
+    hookurl: "http://localhost:8080/qpevents/hooks"  # URL to orchestra-events web-hook endpoint
+  visit:
+    url: "http://192.168.1.8:9090"                   # Base URL used in SMS messages
+    position: 5                                      # Postion in queue that will be notified on VIST_CALL events
+    phone_param: "mobile"                            # Parameter on visit that holds the mobile phone number SMS is sent to
+    customer_param: "customers"                      # Parameter on visit that holds customer name
+  bitly:
+    id: "user@example.com"                           # Bitly user account id
+    secret: password                                 # Bitly user account password
+    token: XXXXXXXXXXXXXXXXXXXXXXXXXXXX              # Bitly api token
+  nexmo:
+    key: xxxxxxx                                     # Nexmo API key
+    secret: xxxxxxxx                                 # Nexmo API secret
