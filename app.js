@@ -34,7 +34,7 @@ var app 	= express();
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
-app.use(express.static('public'));
+app.use('/visit', express.static('public'));
 
 // handle events posted from orchestra
 app.post('/', function(req, res) {
