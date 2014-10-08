@@ -31,7 +31,7 @@ body {
 .ticket {
 	text-align: center;
 	height: 254px;
-	background: url("/img/build/ticket.png") center center;
+	background: url("/visit/img/build/ticket.png") center center;
 	background-repeat: no-repeat;
 }
 .ticket h1 {
