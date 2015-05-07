@@ -29,11 +29,13 @@ try {
 var events 	= require('./events')(config);
 var ep 		= require('./epclient')(config.orchestra.host, config.orchestra.port, config.orchestra.user, config.orchestra.password);
 var app 	= express();
+// Fetch branch settings
+var branches = require('./branches.json');
 
 // configure express
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/views'); //We override this in the get request as we dynamically change for client
 app.use('/visit', express.static('public'));
 
 // handle events posted from orchestra
@@ -59,9 +61,17 @@ app.post('/', function(req, res) {
 
 // handle requests for visit pages
 app.get('/visit/:branch/:queue/:visit', function(req, res) {
-	
+	//Get the branch configuration for the event received and set the view location
+	for(var i = 0; i<branches.length; i++) {
+		if(branches[i].branchId == req.params.branch){
+			app.set('views', __dirname + '/views/'+branches[i].companyFolder);
+		}
+	}
+
 	// get the visit
 	ep.visit(req.params.branch, req.params.visit, function(err, visit) {
+		
+		
 		if(err) {
 			log.error('','Error fetching visit:');
 			log.error('', err);
