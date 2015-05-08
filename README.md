@@ -4,7 +4,8 @@ Send customer notifications on Orchestra events
 
 ## Overview
 
-Application to send notifications to customers, relies on the [orchestra-events](https://github.com/qmatic/orchestra-events) application to recieve events.
+Extended the original application to send notifications to customers,  Additional configuration in branches.json allows settings per branch.
+Relies on the [orchestra-events](https://github.com/qmatic/orchestra-events) application to recieve events.
 
 ![sms_1](../master/docs/sms_1.png) ![sms_2](../master/docs/sms_2.png)
 
@@ -67,6 +68,62 @@ default:
 
 Uses the [node-yaml-config](https://www.npmjs.org/package/node-yaml-config) package.
 
+
+## Branch Settings
+
+branches.js is used for configuring per branch.  To add a branch, copy and extend the json.
+
+```
+{
+"branchId" : 1,						
+	"branchName" : "My Branch Name",
+	"smsFromName" : "Branch",							    # Name displayed as SMS sender (keep short)
+	"companyFolder" : "qmatic",								# Folder location for status pages within /views - this allows customisation per "company" (additional reference to css and image files within each html)
+	"events" : 
+		{
+		"VISIT_CREATE" : true,
+		"VISIT_CALL" : true,
+		"VISIT_TRANSFER_TO_QUEUE" : false, 					# NOT IMPLEMENTED
+		"VISIT_TRANSFER_TO_USER_POOL" : false,				# NOT IMPLEMENTED
+		"VISIT_TRANSFER_TO_SERVICE_POINT_POOL" : false,		# NOT IMPLEMENTED
+		"VISIT_END" : true
+		},
+	"eventMessages" : 
+		{
+		"visit_create_below_queue_position_message" : "Hi {{NAME}}, your visit ref is: {{VISIT}}.  You are currently {{POSITION}} in the queue. {{LINK}}",
+		"visit_create_above_queue_position_message" : "Hi {{NAME}}, your visit ref is: {{VISIT}}.  You are currently {{POSITION}} in the queue, we will notify when to return. {{LINK}}",
+		"appointment_arrive_message" : "Hi {{NAME}}, we shall call you shortly for your {{SERVICE}} appointment, your visit ref is: {{VISIT}}.",
+		"visit_call_message" : "Hi {{NAME}}, Please go to {{SERVICEPOINT}}, where {{STAFF}} is waiting to serve you.",
+		"visit_callback_message" : "Hi {{NAME}}, We shall be ready to serve you soon, please make your way back to {{BRANCH}}.",
+		"transfer_to_queue_message" : "",
+		"transfer_to_user_message" : "",
+		"transfer_to_servicepoint_message" : "",
+		"visit_ended_message" : "Thank you for visiting {{BRANCH}}, we look forward to seeing you again soon."
+		},
+	"enableCallbackMessage" : true,
+	"queuePositionToNotify" : 3
+}
+```
+
+The following message parameters can be used:
+
+* {{NAME}} = Customer Name
+* {{VISIT}}	= Ticket Id
+* {{BRANCH}} = Branch Name
+* {{SERVICE}} = Service Name
+* {{QUEUE}}	= Queue Name
+* {{STAFF}}	= Staff first Name
+* {{SERVICEPOINT}} = ServicePoint Name
+* {{POSITION}} = Queue Position
+* {{LINK}} = Link to url to check progress
+* {{CUSTOM1}} = Custom1 visit parameter
+* {{CUSTOM2}} = Custom2 visit parameter
+* {{CUSTOM5}} = Custom3 visit parameter
+* {{CUSTOM4}} = Custom4 visit parameter
+* {{CUSTOM5}} = Custom5 visit parameter
+
+
+
 ## Customising
 
 ### Progress Page
@@ -83,22 +140,7 @@ and run `grunt` from the repo root.
 
 For more information see the [Grount documentation](http://gruntjs.com/getting-started).
 
-### Filtering
 
-The default implementation will try and send an SMS for each VISIT_CALL and VISIT_CREATE event received, in reality that is probably not a wanted situation and you will
-want to add your own logic to filter events by service etc.
-
-For convenience a method has already been added in [events.js](../master/events.js) that is called on receiving an event:
-
-```java
-validateEvent = function(event) {
-	
-	//TODO - handle any logic here for filtering by branch, service, queue, or any other params on the event
-	// default implementation sends messages for all visits created and called...
-		
-	return true;
-};
-```
 ### Events
 
 You could also update event.js to handle other events, see the orchestra-events [wiki](https://github.com/qmatic/orchestra-events/wiki/Events) for a list of events and their payloads.
