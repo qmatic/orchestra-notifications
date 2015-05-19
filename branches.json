@@ -1,0 +1,31 @@
+[
+{
+	"branchId" : 1,
+	"branchName" : "My Branch Name",
+	"smsFromName" : "Branch",
+	"companyFolder" : "qmatic",
+	"events" : 
+		{
+		"VISIT_CREATE" : true,
+		"VISIT_CALL" : true,
+		"VISIT_TRANSFER_TO_QUEUE" : false,
+		"VISIT_TRANSFER_TO_USER_POOL" : false,
+		"VISIT_TRANSFER_TO_SERVICE_POINT_POOL" : false,
+		"VISIT_END" : true
+		},
+	"eventMessages" : 
+		{
+		"visit_create_below_queue_position_message" : "Hi {{NAME}}, your visit ref is: {{VISIT}}.  You are currently {{POSITION}} in the queue. {{LINK}}",
+		"visit_create_above_queue_position_message" : "Hi {{NAME}}, your visit ref is: {{VISIT}}.  You are currently {{POSITION}} in the queue, we will notify when to return. {{LINK}}",
+		"appointment_arrive_message" : "Hi {{NAME}}, we shall call you shortly for your {{SERVICE}} appointment, your visit ref is: {{VISIT}}.",
+		"visit_call_message" : "Hi {{NAME}}, Please go to {{SERVICEPOINT}}, where {{STAFF}} is waiting to serve you.",
+		"visit_callback_message" : "Hi {{NAME}}, We shall be ready to serve you soon, please make your way back to {{BRANCH}}.",
+		"transfer_to_queue_message" : "",
+		"transfer_to_user_message" : "",
+		"transfer_to_servicepoint_message" : "",
+		"visit_ended_message" : "Thank you for visiting {{BRANCH}}, we look forward to seeing you again soon."
+		},
+	"enableCallbackMessage" : true,
+	"queuePositionToNotify" : 3
+}
+]
